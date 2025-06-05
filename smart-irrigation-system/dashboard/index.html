@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><title>Smart Irrigation Dashboard</title></head>
+<body>
+  <h2>Soil Moisture</h2>
+  <ul>
+    <li>Row 1: <span id="s1">--</span></li>
+    <li>Row 2: <span id="s2">--</span></li>
+    <li>Row 3: <span id="s3">--</span></li>
+    <li>Row 4: <span id="s4">--</span></li>
+  </ul>
+  <button onclick="manualIrrigation()">Irrigate Now</button>
+  <img id="cam" width="400" src="http://192.168.4.201:81/stream">
+  <script>
+    function updateStatus() {
+      fetch("/status").then(res => res.json()).then(data => {
+        for (let i = 1; i <= 4; i++) document.getElementById("s" + i).innerText = data["s" + i];
+      });
+    }
+    function manualIrrigation() {
+      fetch("/manualon");
+    }
+    setInterval(updateStatus, 5000);
+    updateStatus();
+  </script>
+</body>
+</html>
